@@ -293,7 +293,7 @@
             "oozie-site" : {
                 "properties" : {
                     "oozie.service.JPAService.jdbc.driver" : "com.mysql.jdbc.Driver",
-                    "oozie.service.JPAService.jdbc.url" : "jdbc:mysql://{{ groups[cluster_name+'_mn03'][0] }}/oozie",
+                    "oozie.service.JPAService.jdbc.url" : "jdbc:mysql://{{ groups['mysql_server'] }}/oozie",
                     "oozie.service.JPAService.jdbc.username" : "{{ mysql_oozie_user }}",
                     "oozie.db.schema.name" : "{{ mysql_oozie_database }}"
                 }
@@ -302,7 +302,7 @@
         {
             "oozie-env" : {
                "properties" : {
-                   "oozie_hostname" : "{{ groups[cluster_name+'_mn03'][0] }}",
+                   "oozie_hostname" : "%HOSTGROUP::mn03%",
                    "oozie_database" : "Existing MySQL Database"
                 }
             }
@@ -319,13 +319,13 @@
                 "properties": {
 {% if 'NAMENODE' in ha_services %}
                     "fs.defaultFS" : "hdfs://{{ cluster_name }}",
-                    "ha.zookeeper.quorum" : "{{ groups[cluster_name+'_mn01'][0] }}:2181,{{ groups[cluster_name+'_mn02'][0] }}:2181,{{ groups[cluster_name+'_mn03'][0] }}:2181",
+                    "ha.zookeeper.quorum" : "%HOSTGROUP::mn01%:2181,%HOSTGROUP::mn02%:2181,%HOSTGROUP::mn03%:2181",
 {% endif %}
                     "hadoop.proxyuser.hive.groups": "*",
                     "hadoop.proxyuser.hdfs.groups": "*",
-                    "hadoop.proxyuser.hcat.hosts": "{{ groups[cluster_name+'_mn03'][0] }}",
+                    "hadoop.proxyuser.hcat.hosts": "%HOSTGROUP::mn03%",
                     "hadoop.proxyuser.hdfs.hosts": "*",
-                    "hadoop.proxyuser.hive.hosts": "{{ groups[cluster_name+'_mn03'][0] }}"
+                    "hadoop.proxyuser.hive.hosts": "%HOSTGROUP::mn03%"
                 }
             }
         },
@@ -337,7 +337,7 @@
                     "hive.server2.enable.doAs" : "false",
 {% endif %}
                     "hive.enforce.bucketing": "false",
-                    "javax.jdo.option.ConnectionURL": "jdbc:mysql://{{ groups[cluster_name+'_mn03'][0] }}/hive?createDatabaseIfNotExist=true"
+                    "javax.jdo.option.ConnectionURL": "jdbc:mysql://{{ groups['mysql_server'] }}/hive?createDatabaseIfNotExist=true"
                 }
             }
         },
@@ -405,14 +405,14 @@
                   "dfs.ha.fencing.methods" : "shell(/bin/true)",
                   "dfs.ha.namenodes.{{ cluster_name }}" : "nn1,nn2",
                   "dfs.namenode.http-address" : "{{ groups[cluster_name+'_mn01'][0] }}:50070",
-                  "dfs.namenode.http-address.{{ cluster_name }}.nn1" : "{{ groups[cluster_name+'_mn01'][0] }}:50070",
-                  "dfs.namenode.http-address.{{ cluster_name }}.nn2" : "{{ groups[cluster_name+'_mn02'][0] }}:50070",
-                  "dfs.namenode.https-address" : "{{ groups[cluster_name+'_mn01'][0] }}:50470",
-                  "dfs.namenode.https-address.{{ cluster_name }}.nn1" : "{{ groups[cluster_name+'_mn01'][0] }}:50470",
-                  "dfs.namenode.https-address.{{ cluster_name }}.nn2" : "{{ groups[cluster_name+'_mn02'][0] }}:50470",
-                  "dfs.namenode.rpc-address.{{ cluster_name }}.nn1" : "{{ groups[cluster_name+'_mn01'][0] }}:8020",
-                  "dfs.namenode.rpc-address.{{ cluster_name }}.nn2" : "{{ groups[cluster_name+'_mn02'][0] }}:8020",
-                  "dfs.namenode.shared.edits.dir" : "qjournal://{{ groups[cluster_name+'_mn01'][0] }}:8485;{{ groups[cluster_name+'_mn02'][0] }}:8485;{{ groups[cluster_name+'_mn03'][0] }}:8485/{{ cluster_name }}",
+                  "dfs.namenode.http-address.{{ cluster_name }}.nn1" : "%HOSTGROUP::mn01%:50070",
+                  "dfs.namenode.http-address.{{ cluster_name }}.nn2" : "%HOSTGROUP::mn02%:50070",
+                  "dfs.namenode.https-address" : "%HOSTGROUP::mn01%:50470",
+                  "dfs.namenode.https-address.{{ cluster_name }}.nn1" : "%HOSTGROUP::mn01%:50470",
+                  "dfs.namenode.https-address.{{ cluster_name }}.nn2" : "%HOSTGROUP::mn02%:50470",
+                  "dfs.namenode.rpc-address.{{ cluster_name }}.nn1" : "%HOSTGROUP::mn01%:8020",
+                  "dfs.namenode.rpc-address.{{ cluster_name }}.nn2" : "%HOSTGROUP::mn02%:8020",
+                  "dfs.namenode.shared.edits.dir" : "qjournal://%HOSTGROUP::mn01%:8485;%HOSTGROUP::mn02%:8485;%HOSTGROUP::mn03%:8485/{{ cluster_name }}",
                   "dfs.nameservices" : "{{ cluster_name }}",
 {% endif %}
 {% if 'RANGER' in blueprint_services %}
