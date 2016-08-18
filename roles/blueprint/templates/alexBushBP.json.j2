@@ -404,7 +404,7 @@
                   "dfs.ha.automatic-failover.enabled" : "true",
                   "dfs.ha.fencing.methods" : "shell(/bin/true)",
                   "dfs.ha.namenodes.{{ cluster_name }}" : "nn1,nn2",
-                  "dfs.namenode.http-address" : "{{ groups[cluster_name+'_mn01'][0] }}:50070",
+                  "dfs.namenode.http-address" : "%HOSTGROUP::mn01%:50070",
                   "dfs.namenode.http-address.{{ cluster_name }}.nn1" : "%HOSTGROUP::mn01%:50070",
                   "dfs.namenode.http-address.{{ cluster_name }}.nn2" : "%HOSTGROUP::mn02%:50070",
                   "dfs.namenode.https-address" : "%HOSTGROUP::mn01%:50470",
