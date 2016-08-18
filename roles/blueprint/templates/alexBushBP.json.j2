@@ -72,9 +72,9 @@
 {% if 'RANGER' in ssl_services %}
           "policymgr_external_url" : "https://{{ groups[cluster_name+'_mn03'][0] }}:6182",
 {% else %}
-          "policymgr_external_url" : "http://{{ groups[cluster_name+'_mn03'][0] }}:6080",
+          "policymgr_external_url" : "http://{{ groups['mysql_server'] }}:6080",
 {% endif %}
-          "db_host" : "{{ groups[cluster_name+'_mn03'][0] }}:3306",
+          "db_host" : "{{ groups['mysql_server'] }}:3306",
           "db_root_user" : "{{ mysql_root_user }}",
           "db_root_password" : "{{ mysql_root_password }}",
           "db_password" : "{{ mysql_ranger_password }}",
@@ -94,8 +94,8 @@
           "ranger.service.https.attrib.clientAuth" : "want",
           "ranger.service.https.attrib.keystore.keyalias" : "{{ groups[cluster_name+'_mn03'][0] }}",
 {% endif %}
-          "ranger.jpa.jdbc.url" : "jdbc:mysql://{{ groups[cluster_name+'_mn03'][0] }}:3306/{{ mysql_ranger_database }}",
-          "ranger.jpa.audit.jdbc.url" : "jdbc:mysql://{{ groups[cluster_name+'_mn03'][0] }}:3306/{{ mysql_rangeraudit_database }}"
+          "ranger.jpa.jdbc.url" : "jdbc:mysql://{{ groups['mysql_server'] }}:3306/{{ mysql_ranger_database }}",
+          "ranger.jpa.audit.jdbc.url" : "jdbc:mysql://{{ groups['mysql_server'] }}:3306/{{ mysql_rangeraudit_database }}"
         }
       }
     },
