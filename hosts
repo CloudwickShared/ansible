@@ -1,24 +1,19 @@
-[ansible]
-node1.hc.com
 
-[ambari]                                                          
-node1.hc.com                                                      
+[ambari_server]                                                          
+master1.shinigami.com
                                                                   
-[mysqlHost]                                                       
-node1.hc.com                                                      
+[mysql_server]                                                       
+master1.shinigami.com
+                                                                 
+[cluster_masternodes]                                                         
+master1.shinigami.com
+master2.shinigami.com
                                                                   
-[master1]                                                         
-node1.hc.com                                                      
-                                                                  
-[master2]                                                         
-node2.hc.com                                                      
-                                                                  
-[slaves]                                                          
-node[2:4].hc.com                                                  
+[cluster_datanodes]                                                          
+datanode[1:2].shinigami.com
                                                                   
 [kdc_server]                                                      
-node1.hc.com                                                      
-                                                                  
+master1.shinigami.com                                                                  
                                                                   
 [all:vars]                                                        
 ansible_ssh_user=root                                             
@@ -27,12 +22,24 @@ ansible_ssh_private_key_file=~/.ssh/id_rsa
                                                                   
 ##################################                                
                                                                   
-[masters:children]                                                
-master1                                                           
-master2                                                           
+[ambariserver:children]
+ambari_server
+
+[masternodes:children]                                                
+cluster_masternodes
+
+[datanodes:children]
+cluster_datanodes                                                           
+
+[mysql:children]
+mysql_server
+
+[kdcmaster:children]
+kdc_server
                                                                   
-[all:children]                                                    
-ambari                                                            
-master1                                                           
-master2                                                           
-slaves                                                            
+[allnodes:children] 
+ambariserver                                                   
+masternodes                                                            
+datanodes                                                           
+mysql                                                           
+kdcmaster                                                            
