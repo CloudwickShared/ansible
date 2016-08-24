@@ -1,6 +1,6 @@
 ---
 - name: Transfer and execute a script.
-  hosts: all
+  hosts: allnodes
   tasks:
      - name: Transfer the script
        copy: src=ambariCleanUp.sh dest=/home/ambariCleanUp.sh mode=0777
