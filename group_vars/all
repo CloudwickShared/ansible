@@ -25,3 +25,5 @@ ssl_services: ""
 use_ambari_recommendations: yes
 #Needed for grafana password
 blueprint_default_password: bigdata
+cluster_name: DeathNote2
+mysql_server: admin.shinigami.com

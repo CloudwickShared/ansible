@@ -15,5 +15,5 @@ mysql_rangeraudit_database: rangeraudit
 mysql_rangeraudit_user: rangeraudit
 mysql_rangeraudit_password: rangeraudit
 mysql_root_user: root
-mysql_root_password: bigdata
+mysql_root_password: root
 restart_ambari_server_after_installs: true
