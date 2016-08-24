@@ -1,26 +1,46 @@
 ---
 
+- name: Setup Java
+  hosts: allnodes
+  roles:
+    - oracleJava
+
 - name: Installing PreRequisites
-  hosts: all
+  hosts: allnodes
   roles: 
     - PreRequisite
 
 - name: Downloading Ambari Repo
-  hosts: all
+  hosts: allnodes
   roles:
     - AmbariRepo
 
 - name: Setup Ambari Server
-  hosts: ambari
+  hosts: ambariserver
   roles:
     - AmbariServer
 
 - name: Setup Ambari Agent
-  hosts: all
+  hosts: allnodes
   roles:
     - AmbariAgent
 
+- name: Install MySQL
+  hosts: mysql
+  roles:
+    - MySQL
+
+- name: SetUp KDC
+  hosts: kdcmaster
+  roles:
+    - kerberos_server
+
+- name: Set Kerberos agents
+  hosts: all
+  roles:
+    - kerberos_agent 
+
 - name: Apply Blueprint
-  hosts: ambari
+  hosts: ambariserver
   roles: 
     - blueprint
