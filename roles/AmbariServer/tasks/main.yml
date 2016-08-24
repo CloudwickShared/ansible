@@ -8,7 +8,10 @@
                                                                                                                                                  
   - name: Install postgresql                                                                                                                     
     yum: name=postgresql-server state=present                                                                                                    
-                                                                                                                                                 
+  
+  #- name: Init postgresql db
+    #command: service postgresql initdb
+                                                                                                                                               
   - name: Ensure postgresql is started                                                                                                           
     service: name=postgresql state=started                                                                                                       
                                                                                                                                                  
@@ -18,7 +21,11 @@
       JAVA_HOME: "{{ java_home }}"                                                                                                               
                                                                                                                                                  
   - name: Ensure that ambari server is installed                                                                                                 
-    wait_for: path=/tmp/ambari-server-setup-out search_regex="completed successfully"                                                            
+    wait_for: path=/tmp/ambari-server-setup-out search_regex="completed successfully"      
+
+  - name: ambari server setup for conenctor
+    command: ambari-server setup --jdbc-db=mysql --jdbc-driver=/usr/share/java/mysql-connector-java.jar
+    sudo: yes                                                      
                                                                                                                                                  
   - name: Start Ambari server                                                                                                                    
     service: name=ambari-server state=restarted enabled=yes                                                                                      
