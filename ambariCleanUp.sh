@@ -1,8 +1,10 @@
 #!/bin/bash
 ambari-server stop
 ambari-agent stop
-python /usr/lib/python2.6/site-packages/ambari_agent/HostCleanup.py --silent --skip=users
+
 sudo -u postgres psql -c "drop database ambari"
+
+python /usr/lib/python2.6/site-packages/ambari_agent/HostCleanup.py --silent --skip=users
 pkill -9 java
 #################################
 # Remove Packages
