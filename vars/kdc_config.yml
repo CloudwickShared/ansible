@@ -1,0 +1,11 @@
+---
+realm_name: HC.COM
+adminserver: admin.shinigami.com
+kdcserver: admin.shinigami.com
+kdc_master_key: hadoop
+kdc_admin_user: admin
+kdc_admin_password: admin
+kdc_port: 88
+master_db_pass: hadoop
+kadmin_pass: admin
+kadmin_user: admin
