@@ -1,6 +1,0 @@
----
-kdcserver: master1.shinigami.com
-kdc_master_key: hadoop
-kdc_admin_user: admin
-kdc_admin_password: admin
-~
