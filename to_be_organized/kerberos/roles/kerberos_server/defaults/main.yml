@@ -1,8 +1,0 @@
----
-
-realm_name: {{ krb_realm }}
-kdc_server: {{ kdcserver }}
-kdc_port: 88
-master_db_pass: {{ kdc_master_key }}
-kadmin_user: {{ kdc_admin_user }}
-kadmin_pass: {{ kdc_admin_password }}

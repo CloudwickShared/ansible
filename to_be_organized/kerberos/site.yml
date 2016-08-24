@@ -1,5 +1,0 @@
----
-
-- hosts: kdc_server
-  roles:
-   - {role: kerberos_server, keberos_agent}
