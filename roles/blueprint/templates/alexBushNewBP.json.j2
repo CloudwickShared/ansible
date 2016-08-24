@@ -1,0 +1,518 @@
+{
+   "configurations": [
+        {
+            "hive-env": {
+                "properties": {
+                    "hive_security_authorization" : "Ranger",
+                    "hive_database": "Existing MySQL Database"
+                }
+            }
+        },
+    {
+          "kerberos-env": {
+            "properties_attributes" : { },
+            "properties" : {
+              "realm" : "{{ krb_realm }}",
+              "kdc_type" : "mit-kdc",
+              "kdc_host" : "{{ kdcserver }}",
+              "encryption_types": "aes des3-cbc-sha1 rc4 des-cbc-md5",
+              "ldap_url" : "",
+              "create_attributes_template" : "",
+              "container_dn" : "",
+              "admin_server_host" : "{{ adminserver }}"
+            }
+          }
+        },
+        {
+          "krb5-conf": {
+            "kdc.realm": "{{ krb_realm }}",
+ 	    "kdc.domain": "{{ krb_realm|lower() }}",
+	    "kdc.admin": "{{ kdc_admin_user }}/{{ kdc_admin_user }}",
+            "kdc.adminpassword": "{{ kdc_admin_password }}",
+	    "kdb.password": "{{ master_db_pass }}",
+            "properties_attributes" : { },
+            "properties" : {
+              "domains" : "{{ krb_realm }}",
+              "manage_krb5_conf" : "true"
+            }
+          }
+        },
+    {
+      "admin-properties" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "DB_FLAVOR" : "MYSQL",
+          "audit_db_name" : "{{ mysql_rangeraudit_database }}",
+          "db_name" : "{{ mysql_ranger_database }}",
+          "audit_db_user" : "{{ mysql_rangeraudit_user }}",
+          "SQL_CONNECTOR_JAR" : "/usr/share/java/mysql-connector-java.jar",
+          "db_user" : "{{ mysql_ranger_user }}",
+          "policymgr_external_url" : "http://{{ mysql_server }}:6080",
+          "db_host" : "{{ mysql_server }}:3306",
+          "db_root_user" : "{{ mysql_root_user }}",
+          "db_root_password" : "{{ mysql_root_password }}",
+          "db_password" : "{{ mysql_ranger_password }}",
+          "audit_db_password" : "{{ mysql_rangeraudit_password }}"
+        }
+      }
+    },
+    {
+      "ranger-admin-site" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "ranger.jpa.jdbc.url" : "jdbc:mysql://{{ mysql_server }}:3306/{{ mysql_ranger_database }}",
+          "ranger.jpa.audit.jdbc.url" : "jdbc:mysql://{{ mysql_server }}:3306/{{ mysql_rangeraudit_database }}"
+        }
+      }
+    },
+    {
+      "ranger-ugsync-site" : {
+        "properties_attributes" : { },
+        "properties" : {
+        }
+      }
+    },
+    {
+      "ranger-env" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "ranger_user" : "ranger",
+          "ranger-hdfs-plugin-enabled" : "Yes",
+          "ranger-yarn-plugin-enabled" : "No",
+          "ranger-hbase-plugin-enabled" : "Yes",
+          "ranger-hive-plugin-enabled" : "Yes",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db" : "true",
+          "ranger_group" : "ranger",
+          "ranger_admin_username" : "ranger",
+          "ranger_admin_password" : "ranger",
+          "admin_username" : "admin"
+        }
+      }
+    },
+    {
+        "ranger-hdfs-plugin-properties" : {
+          "properties_attributes" : { },
+          "properties" : {
+            "REPOSITORY_CONFIG_USERNAME" : "hadoop",
+            "ranger-hdfs-plugin-enabled" : "Yes",
+            "common.name.for.certificate" : "",
+            "policy_user" : "ambari-qa",
+            "hadoop.rpc.protection" : ""
+          }
+        }
+      },
+      {
+          "ranger-hive-plugin-properties" : {
+            "properties_attributes" : { },
+            "properties" : {
+              "REPOSITORY_CONFIG_USERNAME" : "hive",
+              "ranger-hive-plugin-enabled" : "Yes",
+              "common.name.for.certificate" : "",
+              "policy_user" : "ambari-qa",
+              "hadoop.rpc.protection" : ""
+            }
+          }
+        },
+        {
+            "ranger-hbase-plugin-properties" : {
+              "properties_attributes" : { },
+              "properties" : {
+                "REPOSITORY_CONFIG_USERNAME" : "hbase",
+                "ranger-hbase-plugin-enabled" : "Yes",
+                "common.name.for.certificate" : "",
+                "policy_user" : "ambari-qa",
+                "hadoop.rpc.protection" : ""
+              }
+            }
+          },
+        {
+            "oozie-site" : {
+                "properties" : {
+                    "oozie.service.JPAService.jdbc.driver" : "com.mysql.jdbc.Driver",
+                    "oozie.service.JPAService.jdbc.url" : "jdbc:mysql://{{ mysql_server }}/oozie",
+                    "oozie.service.JPAService.jdbc.username" : "{{ mysql_oozie_user }}",
+                    "oozie.db.schema.name" : "{{ mysql_oozie_database }}"
+                }
+             }
+        },
+        {
+            "oozie-env" : {
+               "properties" : {
+                   "oozie_hostname" : "%HOSTGROUP::mn03%",
+                   "oozie_database" : "Existing MySQL Database"
+                }
+            }
+        },
+        {
+            "ams-site": {
+                "properties": {
+                }
+            }
+        },
+        {
+            "core-site": {
+                "properties": {
+                    "fs.defaultFS" : "hdfs://{{ cluster_name }}",
+                    "ha.zookeeper.quorum" : "%HOSTGROUP::mn01%:2181,%HOSTGROUP::mn02%:2181,%HOSTGROUP::mn03%:2181",
+                    "hadoop.proxyuser.hive.groups": "*",
+                    "hadoop.proxyuser.hdfs.groups": "*",
+                    "hadoop.proxyuser.hcat.hosts": "%HOSTGROUP::mn03%",
+                    "hadoop.proxyuser.hdfs.hosts": "*",
+                    "hadoop.proxyuser.hive.hosts": "%HOSTGROUP::mn03%"
+                }
+            }
+        },
+        {
+            "hive-site": {
+                "properties": {
+                    "hive.security.authorization.enabled" : "true",
+                    "hive.server2.enable.doAs" : "false",
+                    "hive.enforce.bucketing": "false",
+                    "javax.jdo.option.ConnectionURL": "jdbc:mysql://{{ mysql_server }}/hive?createDatabaseIfNotExist=true"
+                }
+            }
+        },
+        {
+            "hiveserver2-site": {
+                "properties": {
+                    "hive.security.authorization.enabled" : "true",
+                    "hive.conf.restricted.list" : "hive.security.authorization.enabled,hive.security.authorization.manager,hive.security.authenticator.manager",
+                    "hive.security.authenticator.manager" : "org.apache.hadoop.hive.ql.security.SessionStateUserAuthenticator",
+                    "hive.security.authorization.manager" : "org.apache.ranger.authorization.hive.authorizer.RangerHiveAuthorizerFactory"
+                }
+            }
+        },
+        {
+            "yarn-env": {
+                "properties": {
+                    "min_user_id": "1000"
+                }
+            }
+        },
+        {
+            "tez-site": {
+                "properties": {
+                }
+            }
+        },
+        {
+            "mapred-site": {
+                "properties": {
+                }
+            }
+        },
+        {
+            "yarn-site": {
+                "properties": {
+                }
+            }
+        },
+        {
+            "zoo.cfg": {
+                "properties": {
+                }
+            }
+        },
+        {
+            "hadoop-env": {
+                "properties": {
+                 "dfs_ha_initial_namenode_active" : "%HOSTGROUP::mn01%",
+                 "dfs_ha_initial_namenode_standby" : "%HOSTGROUP::mn02%"
+                }
+            }
+        },
+        {
+            "ams-env": {
+                "properties": {
+                }
+            }
+        },
+        {
+            "hdfs-site": {
+                "properties": {
+                  "dfs.client.failover.proxy.provider.{{ cluster_name }}" : "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider",
+                  "dfs.ha.automatic-failover.enabled" : "true",
+                  "dfs.ha.fencing.methods" : "shell(/bin/true)",
+                  "dfs.ha.namenodes.{{ cluster_name }}" : "nn1,nn2",
+                  "dfs.namenode.http-address" : "%HOSTGROUP::mn01%:50070",
+                  "dfs.namenode.http-address.{{ cluster_name }}.nn1" : "%HOSTGROUP::mn01%:50070",
+                  "dfs.namenode.http-address.{{ cluster_name }}.nn2" : "%HOSTGROUP::mn02%:50070",
+                  "dfs.namenode.https-address" : "%HOSTGROUP::mn01%:50470",
+                  "dfs.namenode.https-address.{{ cluster_name }}.nn1" : "%HOSTGROUP::mn01%:50470",
+                  "dfs.namenode.https-address.{{ cluster_name }}.nn2" : "%HOSTGROUP::mn02%:50470",
+                  "dfs.namenode.rpc-address.{{ cluster_name }}.nn1" : "%HOSTGROUP::mn01%:8020",
+                  "dfs.namenode.rpc-address.{{ cluster_name }}.nn2" : "%HOSTGROUP::mn02%:8020",
+                  "dfs.namenode.shared.edits.dir" : "qjournal://%HOSTGROUP::mn01%:8485;%HOSTGROUP::mn02%:8485;%HOSTGROUP::mn03%:8485/{{ cluster_name }}",
+                  "dfs.nameservices" : "{{ cluster_name }}",
+                  "dfs.namenode.inode.attributes.provider.class" : "org.apache.ranger.authorization.hadoop.RangerHdfsAuthorizer",
+                  "dfs.cluster.administrators" : "hdfs"
+                }
+            }
+        },
+        {
+            "ams-hbase-site": {
+                "properties": {
+                }
+            }
+        }
+    ],
+  "Blueprints" : {
+    "security" : {
+         "type" : "KERBEROS"
+    },
+    "stack_name" : "HDP",
+    "stack_version" : "{{ hdp_stack }}"
+  },
+   "host_groups" : [
+    {
+      "name" : "mn03",
+      "configurations" : [ ],
+      "components" : [
+        {
+          "name" : "KERBEROS_CLIENT"
+        },
+        {
+              "name" : "RANGER_USERSYNC"
+        },
+        {
+              "name" : "RANGER_ADMIN"
+        },
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name" : "OOZIE_SERVER"
+        },
+        {
+          "name" : "OOZIE_CLIENT"
+        },
+        {
+          "name" : "PIG"
+        },
+        {
+          "name" : "HIVE_SERVER"
+        },
+        {
+          "name" : "HCAT"
+        },
+        {
+          "name" : "METRICS_MONITOR"
+        },
+        {
+          "name" : "TEZ_CLIENT"
+        },
+        {
+          "name" : "HIVE_METASTORE"
+        },
+        {
+          "name" : "JOURNALNODE"
+        },
+        {
+          "name" : "AMBARI_SERVER"
+        },
+        {
+          "name" : "SQOOP"
+        },
+        {
+          "name" : "HIVE_CLIENT"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "METRICS_COLLECTOR"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name" : "WEBHCAT_SERVER"
+        },
+        {
+          "name" : "RESOURCEMANAGER"
+        }
+      ],
+      "cardinality" : "1"
+    },
+    {
+      "name" : "datanode",
+      "configurations" : [ ],
+      "components" : [
+        {
+          "name" : "KERBEROS_CLIENT"
+        },
+        {
+          "name" : "NODEMANAGER"
+        },
+        {
+          "name" : "METRICS_MONITOR"
+        },
+        {
+          "name" : "HBASE_REGIONSERVER"
+        },
+        {
+          "name" : "DATANODE"
+        }
+      ]
+    },
+    {
+      "name" : "mn01",
+      "configurations" : [ ],
+      "components" : [
+        {
+          "name" : "KERBEROS_CLIENT"
+        },
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name" : "PIG"
+        },
+        {
+          "name" : "NAMENODE"
+        },
+        {
+          "name" : "ZKFC"
+        },
+        {
+          "name" : "JOURNALNODE"
+        },
+        {
+          "name" : "HCAT"
+        },
+        {
+          "name" : "METRICS_MONITOR"
+        },
+        {
+          "name" : "TEZ_CLIENT"
+        },
+        {
+          "name" : "SQOOP"
+        },
+        {
+          "name" : "HIVE_CLIENT"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name" : "HBASE_MASTER"
+        },
+        {
+          "name" : "HBASE_CLIENT"
+        }
+      ],
+      "cardinality" : "1"
+    },
+    {
+      "name" : "jobserver",
+      "configurations" : [ ],
+      "components" : [
+        {
+          "name" : "KERBEROS_CLIENT"
+        },
+        {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name" : "METRICS_MONITOR"
+        },
+        {
+          "name" : "TEZ_CLIENT"
+        },
+        {
+          "name" : "SQOOP"
+        },
+        {
+          "name" : "HIVE_CLIENT"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        }
+      ]
+    },
+    {
+      "name" : "mn02",
+      "configurations" : [ ],
+      "components" : [
+        {
+          "name" : "KERBEROS_CLIENT"
+        },
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name" : "PIG"
+        },
+        {
+          "name" : "HISTORYSERVER"
+        },
+        {
+          "name" : "HCAT"
+        },
+        {
+          "name" : "METRICS_MONITOR"
+        },
+        {
+          "name" : "ZKFC"
+        },
+        {
+          "name" : "JOURNALNODE"
+        },
+        {
+          "name" : "NAMENODE"
+        },
+        {
+          "name" : "TEZ_CLIENT"
+        },
+        {
+          "name" : "APP_TIMELINE_SERVER"
+        },
+        {
+          "name" : "SQOOP"
+        },
+        {
+          "name" : "HIVE_CLIENT"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "YARN_CLIENT"
+        },
+        {
+          "name" : "HBASE_CLIENT"
+        },
+        {
+          "name" : "MAPREDUCE2_CLIENT"
+        }
+      ],
+      "cardinality" : "1"
+    }
+  ]
+}

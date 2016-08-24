@@ -1,16 +1,27 @@
 ---
+    - name: Include kdc variables
+      include_vars: vars/kdc_config.yml
+   
+    - name: Include ambari variables
+      include_vars: group_vars/ambariServer
+   
+    - name: Include all group variables
+      include_vars: group_vars/all
+
     - name: copying blueprint to /opt
-      template: src=kerberosBlueprint.json.j2 dest={{ blueprint_location }}
+      #template: src=kerberosBlueprint.json.j2 dest={{ blueprint_location }}
+      template: src=alexBushNewBP.json.j2 dest={{ blueprint_location }} backup=yes
 
     - name: copying hostmapping to /opt
-      template: src=kerberosTemplate.json.j2 dest={{ hostmap_location }}
+      #template: src=kerberosTemplate.json.j2 dest={{ hostmap_location }}
+      template: src=alexBushCT.json.j2 dest={{ hostmap_location }}
 
     - name: register blueprint
       shell: 'curl -H "X-Requested-By: ambari" -X POST -u admin:admin http://{{ item }}:8080/api/v1/blueprints/{{ blueprint_name }} -d @{{ blueprint_location }}'
       with_items:
-        - "{{ groups['ambari'] }}"
+        - "{{ groups['ambari_server'] }}"
 
     - name: deploy cluster
       shell: 'curl -H "X-Requested-By: ambari" -X POST -u admin:admin http://{{ item }}:8080/api/v1/clusters/{{ cluster_name }} -d @{{ hostmap_location }}'
       with_items:
-        - "{{ groups['ambari'] }}"
+        - "{{ groups['ambari_server'] }}"

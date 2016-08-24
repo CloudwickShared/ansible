@@ -1,5 +1,4 @@
 
-blueprint_name: blueprintMulti              
+blueprint_name: "{{ cluster_name }}"
 blueprint_location: /opt/blueprintMulti.json
-cluster_name: myCluster                     
 hostmap_location: /opt/hostmapping.json     
