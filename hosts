@@ -3,17 +3,18 @@
 master1.shinigami.com
                                                                   
 [mysql_server]                                                       
-master1.shinigami.com
+admin.shinigami.com
                                                                  
 [cluster_masternodes]                                                         
 master1.shinigami.com
 master2.shinigami.com
+master3.shinigami.com
                                                                   
 [cluster_datanodes]                                                          
 datanode[1:2].shinigami.com
                                                                   
-[kdc_server]                                                      
-master1.shinigami.com                                                                  
+[kdc_server]                                                     
+admin.shinigami.com 
                                                                   
 [all:vars]                                                        
 ansible_ssh_user=root                                             
@@ -41,5 +42,10 @@ kdc_server
 ambariserver                                                   
 masternodes                                                            
 datanodes                                                           
+
+[all:children]
+ambariserver
+masternodes 
+datanodes   
 mysql                                                           
 kdcmaster                                                            
