@@ -1,6 +1,7 @@
 ---
   - name: Include kdc_config
-    include_vars: vars/kdc_config
+    include_vars: vars/kdc_config.yml
+
   - name: Install Server componenets
     yum: name={{ item }} state=present
     with_items: '{{ kerberos_pkg }}'

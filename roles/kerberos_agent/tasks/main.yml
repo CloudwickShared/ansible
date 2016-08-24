@@ -1,6 +1,6 @@
 ---
   - name: Include kdc confid
-    include_vars: vars/kdc_config
+    include_vars: vars/kdc_config.yml
 
   - name: Install Server componenets
     yum: name={{ item }} state=present
