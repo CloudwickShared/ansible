@@ -9,8 +9,6 @@
   changed_when: no
 
 - name: download oracle jdk if not installed
-  #command: curl -L  -H 'Cookie:oraclelicense=accept-securebackup-cookie'  -o /tmp/{{ jdk_tarball_file }}.rpm  {{ jdk_tarball_url }}.rpm
-  #when: jdk_check.rc == 1
   get_url:                                                   
     url={{ jdk_tarball_url }}.rpm                                     
     dest=/tmp/{{ jdk_tarball_file }}.rpm                              
