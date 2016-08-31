@@ -6,8 +6,9 @@ This repository aims at automating the cluster deployment by using configuration
 
 #### 1. Set PasswordLess SSH
 
-#### 2. Download the git
+#### 2. Download the git and the repo
   ```
+  yum -y install git
   git clone https://github.com/CloudwickShared/ansible
   cd ansible
   ```
