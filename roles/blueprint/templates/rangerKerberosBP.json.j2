@@ -1,0 +1,174 @@
+{
+  "configurations" : [
+    {
+      "kerberos-env": {
+        "properties_attributes" : { },
+        "properties" : {
+          "realm" : "{{ krb_realm }}",
+          "kdc_type" : "mit-kdc",
+          "kdc_host" : "{{ kdcserver }}",
+          "admin_server_host" : "{{ adminserver }}",
+          "container_dn" : "",
+          "ldap_url" : "",
+          "create_attributes_template" : "",
+          "encryption_types" : "aes des3-cbc-sha1 rc4 des-cbc-md5" 
+        }
+      }
+    },
+    {
+      "krb5-conf": {
+        "kdc.realm": "{{ krb_realm }}",
+ 	"kdc.domain": "{{ krb_realm|lower() }}",
+	"kdc.admin": "{{ kdc_admin_user }}/{{ kdc_admin_user }}",
+        "kdc.adminpassword": "{{ kdc_admin_password }}",
+	"kdb.password": "{{ master_db_pass }}",
+        "properties_attributes" : { },
+        "properties" : {
+          "domains" : "{{ krb_realm }}",
+          "manage_krb5_conf" : "true"
+        }
+      }
+    },
+     {
+      "admin-properties" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "DB_FLAVOR" : "MYSQL",
+          "audit_db_name" : "{{ mysql_rangeraudit_database }}",
+          "db_name" : "{{ mysql_ranger_database }}",
+          "audit_db_user" : "{{ mysql_rangeraudit_user }}",
+          "SQL_CONNECTOR_JAR" : "/usr/share/java/mysql-connector-java.jar",
+          "db_user" : "{{ mysql_ranger_user }}",
+          "policymgr_external_url" : "http://{{ mysql_server }}:6080",
+          "db_host" : "{{ mysql_server }}:3306",
+          "db_root_user" : "{{ mysql_root_user }}",
+          "db_root_password" : "{{ mysql_root_password }}",
+          "db_password" : "{{ mysql_ranger_password }}",
+          "audit_db_password" : "{{ mysql_rangeraudit_password }}"
+        }
+      }
+    },
+    {
+      "ranger-admin-site" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "ranger.jpa.jdbc.url" : "jdbc:mysql://{{ mysql_server }}:3306/{{ mysql_ranger_database }}",
+          "ranger.jpa.audit.jdbc.url" : "jdbc:mysql://{{ mysql_server }}:3306/{{ mysql_rangeraudit_database }}"
+        }
+      }
+    },
+    {
+      "ranger-ugsync-site" : {
+        "properties_attributes" : { },
+        "properties" : {
+        }
+      }
+    },
+    {
+      "ranger-env" : {
+        "properties_attributes" : { },
+        "properties" : {
+          "ranger_user" : "ranger",
+          "ranger-hdfs-plugin-enabled" : "Yes",
+          "ranger-yarn-plugin-enabled" : "No",
+          "ranger-hbase-plugin-enabled" : "Yes",
+          "ranger-hive-plugin-enabled" : "Yes",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://%HOSTGROUP::master1%:8020/ranger/audit",
+          "xasecure.audit.destination.solr" : "false",
+          "xasecure.audit.destination.db" : "true",
+          "ranger_privelege_user_jdbc_url" : "jdbc:mysql://{{ mysql_server }}",
+          "ranger_group" : "ranger",
+          "ranger_admin_username" : "ranger",
+          "ranger_admin_password" : "ranger",
+          "admin_username" : "root",
+          "create_db_dbuser" : "true"
+        }
+      }
+    },
+    {
+        "ranger-hdfs-plugin-properties" : {
+          "properties_attributes" : { },
+          "properties" : {
+            "REPOSITORY_CONFIG_USERNAME" : "hadoop",
+            "ranger-hdfs-plugin-enabled" : "Yes",
+            "common.name.for.certificate" : "",
+            "policy_user" : "ambari-qa",
+            "hadoop.rpc.protection" : ""
+          }
+        }
+     }
+     
+  ],
+  "host_groups" : [
+    {
+      "name" : "master1",
+      "configurations" : [ ],
+      "components" : [
+        {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "NAMENODE"
+        },
+
+        {
+          "name" : "RANGER_USERSYNC"
+        },
+        {
+          "name" : "RANGER_ADMIN"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        }
+      ],
+      "cardinality" : "1"
+    },
+    {
+      "name" : "master2",
+      "configurations" : [ ],
+      "components" : [
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "KERBEROS_CLIENT"
+        },
+        {
+          "name" : "SECONDARY_NAMENODE"
+        }
+      ],
+      "cardinality" : "1"
+    },
+    {
+      "name" : "slave",
+      "components" : [
+        {
+          "name" : "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name" : "ZOOKEEPER_SERVER"
+        },
+        {
+          "name" : "KERBEROS_CLIENT"
+        },
+        {
+          "name" : "HDFS_CLIENT"
+        },
+        {
+          "name" : "DATANODE"
+        }
+      ],
+      "cardinality" : "2"
+    }
+  ],
+  "Blueprints" : {
+    "stack_name" : "HDP",
+    "stack_version" : "{{ hdp_stack }}",
+    "security" : {
+         "type" : "KERBEROS"
+    }
+  }
+}
