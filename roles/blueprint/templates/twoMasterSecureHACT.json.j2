@@ -1,0 +1,60 @@
+{
+  "default_password" : "{{ blueprint_default_password }}",
+  "blueprint" : "{{ cluster_name }}",
+{% if 'KERBEROS' in blueprint_services %}
+  "credentials" : [
+   {
+     "alias" : "kdc.admin.credential",
+     "principal" : "{{ kdc_admin_user }}/admin",
+     "key" : "{{ kdc_admin_password }}",
+     "type" : "TEMPORARY"
+   }
+ ],
+ "security" : {
+        "type" : "KERBEROS"
+ },
+ {% endif %}
+  "configurations" : [
+{% if 'OOZIE' in blueprint_services %}
+    {
+      "oozie-site" : {
+        "oozie.service.JPAService.jdbc.password" : "{{ mysql_oozie_password }}"
+      }
+    },
+{% endif %}
+    {
+      "hive-site" : {
+        "javax.jdo.option.ConnectionPassword" : "{{ mysql_hive_password }}"
+      }
+    }
+  ],
+  "host_groups" :[
+    {
+      "name" : "host_group_2",
+      "hosts" : [
+        {
+          "fqdn" : "master1.shinigami.com"
+        }
+      ]
+    },
+    {
+      "name" : "host_group_3",
+      "hosts" : [
+        {
+          "fqdn" : "master2.shinigami.com"
+        }
+      ]
+    },
+    {
+      "name" : "host_group_1",
+      "hosts" : [
+        {
+          "fqdn" : "datanode1.shinigami.com"
+        },
+        {
+          "fqdn" : "datanode2.shinigami.com"
+        }
+      ]
+    }
+  ]
+}
