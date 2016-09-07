@@ -184,6 +184,18 @@ userdel -r   yarn
 userdel -r   flume
 userdel -r   hue
 userdel -r   sqoop2
+userdel -r ams
+userdel -r ranger
+userdel -r tez
+userdel -r Knox
+userdel -r storm
+userdel -r atlas
+userdel -r falcon
+userdel -r accumulo
+userdel -r mahout
+userdel -r spark
+userdel -r kafka
+
 
 yum list installed | grep -i ambari
 
