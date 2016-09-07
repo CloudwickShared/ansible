@@ -204,3 +204,6 @@ rm -rf /etc/ambari-agent
 
 
 yum list installed | grep -i ambari
+
+# Delete kdc keytabs
+rm -rf /etc/security/keytabs
