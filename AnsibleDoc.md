@@ -107,3 +107,26 @@ _If nodes are connecting for the first time the user has to authenticate if it w
     - name: test connection using ping
       ping:
 ```
+
+
+## Ansible Vault
+
+
+* Encrypt an existing file. You'll need to create an encryption password.
+
+`ansible-vault encrypt secrets.yml`
+
+* Creates a new, encrypted file. You'll need to create an encryption password.
+
+`ansible-vault create secrets.yml`
+
+* Decrypt a file. You'll have to enter password used for encryption.
+* Use it with caution! Don't leave your files unecrypted.
+
+`ansible-vault decrypt secrets.yml`
+
+* Edit an encrypted file (uses vim by default, can be overriden by the environment variable $EDITOR)
+
+`ansible-vault edit secrets.yml`
+
+
