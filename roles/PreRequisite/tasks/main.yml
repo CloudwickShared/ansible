@@ -29,6 +29,10 @@
       yum: name=ntp state=present
     - name: start ntpd
       service: name=ntpd state=started enabled=yes
+  
+    - name: include tasks to disable Huge pages
+      include: huge_pages.yml
+      no_log: True
 
     - name: update openssl
       yum: name=openssl state=latest

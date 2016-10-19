@@ -83,10 +83,13 @@
           "ranger-hive-plugin-enabled" : "Yes",
           "xasecure.audit.destination.solr" : "false",
           "xasecure.audit.destination.db" : "true",
+          "xasecure.audit.destination.hdfs.dir" : "hdfs://%HOSTGROUP::mn01:8020/ranger/audit",
           "ranger_group" : "ranger",
           "ranger_admin_username" : "ranger",
           "ranger_admin_password" : "ranger",
-          "admin_username" : "admin"
+          "admin_username" : "root",
+          "ranger_privelege_user_jdbc_url" : "jdbc:mysql://{{ mysql_server }}",
+          "create_db_dbuser" : "true"
         }
       }
     },
@@ -310,9 +313,6 @@
         },
         {
           "name" : "JOURNALNODE"
-        },
-        {
-          "name" : "AMBARI_SERVER"
         },
         {
           "name" : "SQOOP"

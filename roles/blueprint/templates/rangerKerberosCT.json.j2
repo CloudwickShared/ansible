@@ -1,0 +1,39 @@
+{
+    "blueprint": "{{ cluster_name }}",
+    "default_password": "{{ blueprint_default_password }}",
+    "host_groups": [
+        {
+          "hosts": [
+              { "fqdn": "master1.shinigami.com" }
+          ],
+          "name": "master1",
+          "configurations" : [ ]
+        },
+        {
+          "hosts": [
+              { "fqdn": "master2.shinigami.com" }
+          ],
+          "name": "master2",
+          "configurations" : [ ]
+        },
+        {
+          "hosts": [
+              { "fqdn": "datanode1.shinigami.com" },
+              { "fqdn": "datanode2.shinigami.com" }
+          ],
+          "name": "slave",
+          "configurations" : [ ]
+        }
+    ],
+    "credentials" : [
+     {
+       "alias" : "kdc.admin.credential",
+       "principal" : "{{ kdc_admin_user }}/{{ kdc_admin_user }}",
+       "key" : "{{ kdc_admin_password }}",
+       "type" : "TEMPORARY"
+     }
+    ],
+    "security" : {
+        "type" : "KERBEROS"
+   }
+}
