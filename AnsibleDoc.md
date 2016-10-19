@@ -129,4 +129,21 @@ _If nodes are connecting for the first time the user has to authenticate if it w
 
 `ansible-vault edit secrets.yml`
 
+## Ansible module for slack notification
+
+```
+- hosts: servername
+  tasks:
+    - name: Send notification message via Slack
+      local_action:
+        module: slack
+        # To retrieve your slack token, open your team settings and look for the
+        # Incoming Webhooks plugin
+        token: <your>/<token>/<goes here>
+        msg: "Hello team! I just finished updating our production environment."
+        channel: "#general"
+        username: "ansible-bot"
+```
+
+
 
