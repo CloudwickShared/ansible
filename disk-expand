@@ -1,0 +1,59 @@
+#! /bin/bash
+# disk_expand    Add extra virtual disk space on [openstack] server
+# chkconfig: 3 90 90
+# description: This script should run once on reboot and remove itself from the runlevel.
+
+# This code will Automatically create Vda4
+# starting from cylinder 20806 to full size
+# as 83 (ext4) and write it
+# to the partition table
+
+logdir="/var/log/disk-expand"
+mkdir -p ${logdir}
+
+
+logfile="${logdir}/disk_expand.log" # a file keeping the log
+
+echo "Logging to ${logfile}..."
+
+countdir="/etc/disk_expand"
+mkdir -p ${countdir}
+
+countfile="${countdir}/disk_expansion_count" # a file keeping track of the number of times the server has rebooted
+
+touch ${countfile} # if the script is running for the first time
+reboots_count=`cat ${countfile}` # read the content of the reboot counter
+
+if [[ ${reboots_count} == "" ]]; then # if this is the first time the script reboots
+	echo "Stage 1 starting"  >> ${logfile}
+	(echo p; echo n; echo p; echo 4; echo 20806; echo ; echo t; echo t; echo 4; echo 83; echo p; echo w) | fdisk /dev/vda  >> ${logfile}
+	echo "1" > ${countfile} # increase the counter of reboots from "" to "1"
+	echo "Stage 1 done, rebooting"  >> ${logfile}
+
+	# Move to /etc/init.d 
+	cp $0 /etc/init.d/disk_expand >> ${logfile}
+	chmod +x /etc/init.d/disk_expand >> ${logfile}
+	chown root:root /etc/init.d/disk_expand >> ${logfile}
+	chkconfig --add disk_expand >> ${logfile}
+
+	# This code will reboot the machine
+	reboot
+fi
+
+
+if [[ ${reboots_count} == "1" ]]; then ## This code need to be run after rebooting
+	echo "Stage 2 starting"  >> ${logfile}
+	# this code will add extended volume to a group
+	vgextend VolGroup00 /dev/vda4 >> ${logfile}
+	# this code extendes the volume 100% you can change the percentage buy I like it to be 100% as default
+	lvextend -l +100%FREE /dev/VolGroup00/LogVol00  >> ${logfile}
+	# this code will resize the machine and this is important step to complete the process
+	resize2fs -p /dev/mapper/VolGroup00-LogVol00 >> ${logfile}
+	# this code will display the new size
+	echo "2" > ${countfile} # increase the counter of reboots from "1" to "2"
+	df -h >> ${logfile}
+	echo "Stage 2 done"  >> ${logfile}
+	# And now we remove the script from
+	# /etc/rc3.d so that it only runs once
+	chkconfig --del disk_expand
+fi
