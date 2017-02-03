@@ -1,0 +1,15 @@
+- name: Expanding disk
+  hosts: allnodes
+  tasks:
+  - name: be sure libselinux-python are installed
+    yum: name=libselinux-python state=present
+  
+  - name: Copying disk-expand script
+    copy: src=~/temp/disk-expand dest=/opt/disk-expand
+
+  - name: Change make script executable
+    file: path=/opt/disk-expand mode=755
+
+  - name: Running disk-expand script
+    shell: /opt/disk-expand
+
