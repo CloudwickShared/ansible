@@ -1,24 +1,28 @@
 
-[ambari_server]                                                          
-master1.shinigami.com
+[ambari_server]                                               
+node1.shinigami.com
                                                                   
 [mysql_server]                                                       
 admin.shinigami.com
                                                                  
 [cluster_masternodes]                                                         
-master1.shinigami.com
-master2.shinigami.com
-master3.shinigami.com
+node1.shinigami.com
+node2.shinigami.com
+node3.shinigami.com
                                                                   
 [cluster_datanodes]                                                          
-datanode[1:2].shinigami.com
+node[4:5].shinigami.com
                                                                   
 [kdc_server]                                                     
 admin.shinigami.com 
 
+[nifi]
+nifi[1:2].shinigami.com
+
 [all:vars]                                                        
 ansible_ssh_user=root                                             
 ansible_ssh_private_key_file=~/.ssh/id_rsa                        
+
                                                                   
                                                                   
 ##################################                                
@@ -40,8 +44,7 @@ mysql_server
 kdc_server      
                                                             
 [allnodes:children] 
-ambariserver                                                   
-masternodes                                                            
+masternodes                                                   
 datanodes                                                           
 
 [all:children]
