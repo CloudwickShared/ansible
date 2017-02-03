@@ -107,3 +107,7 @@ _If nodes are connecting for the first time the user has to authenticate if it w
     - name: test connection using ping
       ping:
 ```
+
+#### P.S. To run ansible on specific inventory, `ansible all -i hosts -m ping`
+
+#### P.S. To run playbook on specific host, `ansible-playbook -i hosts disk-expand.yml -l ambari_server -k`
