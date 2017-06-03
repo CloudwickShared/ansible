@@ -27,7 +27,7 @@ It doesn't have any agents, It uses YAML language in form of Ansible Playbooks,
 #### Inventory management
 
   * Inventory can be managed using simple text file. For instance:
-  ```sh 
+  ```sh
   [webservers]
   www1.example.com
   www2.example.com
@@ -39,7 +39,7 @@ It doesn't have any agents, It uses YAML language in form of Ansible Playbooks,
 
 #### Playbooks
 
-  * It can handle multiple slices of your infrastructure topology. 
+  * It can handle multiple slices of your infrastructure topology.
 
 Ansible is decentralized-it relies on existing OS credentials to control access to remote machines. It can be connected with kerberos,LDAP.
 
@@ -47,7 +47,7 @@ Ansible is decentralized-it relies on existing OS credentials to control access 
 ## Installation
 
 #### Download and Set EPEL
-  * `cd /opt/ && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm` 
+  * `cd /opt/ && wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm`
   * `rpm -ivh epel-release-latest-6.noarch.rpm`
 
 #### Install Ansible
@@ -78,14 +78,14 @@ _If nodes are connecting for the first time the user has to authenticate if it w
 
   * Non-standard port: `badwolf.example.com:5309`
   * If we just have static ip: `jumper ansible_port=5555 ansible_host=192.168.1.50`
-  * If lots of hosts: 
+  * If lots of hosts:
   `[webservers]
   www[01:50].example.com`
 
 #### Running command on specific hosts (servers)
 
 `ansible -m shell -a "hostname" servers`
-  
+
 
 ## Few Ad-hoc commands
 
@@ -101,7 +101,7 @@ _If nodes are connecting for the first time the user has to authenticate if it w
 ## First Playbook
 
 ```json
-- hosts: node1 
+- hosts: node1
   remote_user: root
   tasks:
     - name: test connection using ping
