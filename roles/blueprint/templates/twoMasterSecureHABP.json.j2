@@ -28,7 +28,6 @@
           "hbase.local.dir" : "${hbase.tmp.dir}/local",
           "phoenix.query.timeoutMs" : "300000",
           "hbase.regionserver.thread.compaction.small" : "3",
-          "hbase.zookeeper.quorum" : "{{zookeeper_quorum_hosts}}",
           "hbase.client.scanner.timeout.period" : "300000",
           "hbase.regionserver.info.port" : "61330",
           "phoenix.query.rowKeyOrderSaltedTable" : "true",
@@ -65,7 +64,6 @@
           "hbase.rpc.timeout" : "30000",
           "hbase.zookeeper.peerport" : "61288",
           "hbase.regionserver.port" : "61320",
-          "hbase.zookeeper.property.clientPort" : "{{zookeeper_clientPort}}",
           "hbase.hregion.memstore.block.multiplier" : "4",
           "hbase.normalizer.enabled" : "true"
         }
@@ -97,8 +95,6 @@
         "properties" : {
           "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/hadoop-client/conf/ranger-plugin-truststore.jks",
           "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/hadoop-client/conf/ranger-plugin-keystore.jks",
-          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
-          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
         }
       }
     },
@@ -121,8 +117,6 @@
         "properties" : {
           "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/hadoop-client/conf/ranger-yarn-plugin-truststore.jks",
           "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/hadoop-client/conf/ranger-yarn-plugin-keystore.jks",
-          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
-          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
         }
       }
     },
@@ -151,8 +145,6 @@
         "properties" : {
           "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/hive-server2/conf/ranger-plugin-truststore.jks",
           "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/hive-server2/conf/ranger-plugin-keystore.jks",
-          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
-          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
         }
       }
     },
@@ -199,10 +191,7 @@
         "properties" : {
           "ranger.plugin.yarn.policy.rest.ssl.config.file" : "/etc/hadoop/conf/ranger-policymgr-ssl-yarn.xml",
           "ranger.plugin.yarn.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
-          "ranger.plugin.yarn.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
           "ranger.plugin.yarn.policy.pollIntervalMs" : "30000",
-          "ranger.plugin.yarn.policy.rest.url" : "{{policymgr_mgr_url}}",
-          "ranger.plugin.yarn.service.name" : "{{repo_name}}"
         }
       }
     },
@@ -228,17 +217,13 @@
       "ranger-yarn-audit" : {
         "properties_attributes" : { },
         "properties" : {
-          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
           "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/hadoop/yarn/audit/hdfs/spool",
           "xasecure.audit.is.enabled" : "true",
           "xasecure.audit.destination.hdfs" : "true",
           "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/hadoop/yarn/audit/solr/spool",
           "xasecure.audit.destination.hdfs.dir" : "hdfs://%HOSTGROUP::host_group_2%:8020/ranger/audit",
-          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
-          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
           "xasecure.audit.destination.db" : "false",
           "xasecure.audit.destination.solr" : "false",
-          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
           "xasecure.audit.destination.solr.zookeepers" : "NONE",
           "xasecure.audit.provider.summary.enabled" : "false",
           "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/hadoop/yarn/audit/db/spool",
@@ -462,7 +447,6 @@
           "yarn.timeline-service.entity-group-fs-store.group-id-plugin-classes" : "org.apache.tez.dag.history.logging.ats.TimelineCachePluginImpl",
           "yarn.resourcemanager.address" : "%HOSTGROUP::host_group_2%:8050",
           "yarn.timeline-service.recovery.enabled" : "true",
-          "yarn.nodemanager.recovery.dir" : "{{yarn_log_dir_prefix}}/nodemanager/recovery-state",
           "yarn.resourcemanager.scheduler.monitor.enable" : "false",
           "hadoop.registry.rm.enabled" : "false",
           "yarn.resourcemanager.bind-host" : "0.0.0.0",
@@ -642,18 +626,13 @@
       "ranger-hdfs-audit" : {
         "properties_attributes" : { },
         "properties" : {
-          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
           "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/hadoop/hdfs/audit/hdfs/spool",
           "xasecure.audit.is.enabled" : "true",
           "xasecure.audit.destination.hdfs" : "true",
           "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/hadoop/hdfs/audit/solr/spool",
           "xasecure.audit.destination.hdfs.dir" : "hdfs://%HOSTGROUP::host_group_2%:8020/ranger/audit",
-          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
-          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
           "xasecure.audit.destination.db" : "false",
           "xasecure.audit.destination.solr" : "false",
-          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
-          "xasecure.audit.destination.solr.zookeepers" : "NONE",
           "xasecure.audit.provider.summary.enabled" : "false",
           "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/hadoop/hdfs/audit/db/spool",
           "xasecure.audit.destination.solr.urls" : ""
@@ -685,17 +664,13 @@
       "ranger-knox-audit" : {
         "properties_attributes" : { },
         "properties" : {
-          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
           "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/knox/audit/hdfs/spool",
           "xasecure.audit.is.enabled" : "true",
           "xasecure.audit.destination.hdfs" : "true",
           "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/knox/audit/solr/spool",
           "xasecure.audit.destination.hdfs.dir" : "hdfs://%HOSTGROUP::host_group_2%:8020/ranger/audit",
-          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
-          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
           "xasecure.audit.destination.db" : "false",
           "xasecure.audit.destination.solr" : "false",
-          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
           "xasecure.audit.destination.solr.zookeepers" : "NONE",
           "xasecure.audit.provider.summary.enabled" : "false",
           "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/knox/audit/db/spool",
@@ -770,11 +745,8 @@
         "properties_attributes" : { },
         "properties" : {
           "ranger.plugin.knox.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminJersey2RESTClient",
-          "ranger.plugin.knox.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
-          "ranger.plugin.knox.policy.rest.url" : "{{policymgr_mgr_url}}",
           "ranger.plugin.knox.policy.rest.ssl.config.file" : "/usr/hdp/current/knox-server/conf/ranger-policymgr-ssl.xml",
           "ranger.plugin.knox.policy.pollIntervalMs" : "30000",
-          "ranger.plugin.knox.service.name" : "{{repo_name}}"
         }
       }
     },
@@ -788,7 +760,6 @@
           "ranger.usersync.unix.minUserId" : "500",
           "ranger.usersync.filesource.file" : "/tmp/usergroup.txt",
           "ranger.usersync.group.nameattribute" : "",
-          "ranger.usersync.policymanager.baseURL" : "{{ranger_external_url}}",
           "ranger.usersync.ldap.username.caseconversion" : "lower",
           "ranger.usersync.ldap.bindalias" : "testldapalias",
           "ranger.usersync.sink.impl.class" : "org.apache.ranger.unixusersync.process.PolicyMgrUserGroupBuilder",
@@ -984,52 +955,37 @@
         "properties" : {
           "ranger.sso.browser.useragent" : "Mozilla,chrome",
           "ranger.jpa.audit.jdbc.credential.alias" : "rangeraudit",
-          "ranger.jpa.jdbc.dialect" : "{{jdbc_dialect}}",
-          "ranger.jpa.jdbc.user" : "{{ranger_db_user}}",
+          "ranger.jpa.jdbc.user" : "{{mysql_ranger_user}}",
           "ranger.https.attrib.keystore.file" : "/etc/ranger/admin/conf/ranger-admin-keystore.jks",
           "ranger.service.http.enabled" : "true",
-          "ranger.jpa.audit.jdbc.url" : "{{audit_jdbc_url}}",
-          "ranger.ldap.ad.url" : "{{ranger_ug_ldap_url}}",
           "ranger.audit.solr.username" : "ranger_solr",
           "ranger.ldap.base.dn" : "dc=example,dc=com",
           "ranger.ldap.group.roleattribute" : "cn",
           "ranger.unixauth.remote.login.enabled" : "true",
           "ranger.authentication.method" : "UNIX",
           "ranger.ldap.user.dnpattern" : "uid={0},ou=users,dc=xasecure,dc=net",
-          "ranger.ldap.ad.bind.dn" : "{{ranger_ug_ldap_bind_dn}}",
-          "ranger.ldap.group.searchfilter" : "{{ranger_ug_ldap_group_searchfilter}}",
           "ranger.service.https.attrib.ssl.enabled" : "false",
           "ranger.audit.solr.urls" : "",
           "ranger.service.https.attrib.clientAuth" : "want",
           "ranger.sso.enabled" : "false",
-          "ranger.ldap.group.searchbase" : "{{ranger_ug_ldap_group_searchbase}}",
           "ranger.sso.publicKey" : "",
           "ranger.jpa.jdbc.credential.alias" : "rangeradmin",
-          "ranger.unixauth.service.hostname" : "{{ugsync_host}}",
           "ranger.sso.query.param.originalurl" : "originalUrl",
-          "ranger.jpa.audit.jdbc.user" : "{{ranger_audit_db_user}}",
           "ranger.jpa.jdbc.url" : "jdbc:mysql://{{ mysql_server }}:3306/{{ mysql_ranger_database }}?createDatabaseIfNotExist=true",
-          "ranger.service.host" : "{{ranger_host}}",
-          "ranger.ldap.bind.dn" : "{{ranger_ug_ldap_bind_dn}}",
+          "ranger.service.host" : "%HOSTGROUP::host_group_3%",
           "ranger.service.http.port" : "6080",
-          "ranger.ldap.url" : "{{ranger_ug_ldap_url}}",
           "ranger.jpa.jdbc.driver" : "com.mysql.jdbc.Driver",
           "ranger.unixauth.service.port" : "5151",
           "ranger.ldap.ad.base.dn" : "dc=example,dc=com",
           "ranger.ldap.referral" : "ignore",
-          "ranger.jpa.audit.jdbc.driver" : "{{ranger_jdbc_driver}}",
           "ranger.service.https.attrib.keystore.keyalias" : "rangeradmin",
           "ranger.ldap.ad.referral" : "ignore",
           "ranger.sso.cookiename" : "hadoop-jwt",
-          "ranger.jpa.audit.jdbc.dialect" : "{{jdbc_dialect}}",
           "ranger.ldap.ad.domain" : "",
-          "ranger.ldap.ad.user.searchfilter" : "{{ranger_ug_ldap_user_searchfilter}}",
           "ranger.credential.provider.path" : "/etc/ranger/admin/rangeradmin.jceks",
           "ranger.sso.providerurl" : "",
-          "ranger.ldap.user.searchfilter" : "{{ranger_ug_ldap_user_searchfilter}}",
           "ranger.audit.source.type" : "solr",
           "ranger.audit.solr.zookeepers" : "NONE",
-          "ranger.externalurl" : "{{ranger_external_url}}",
           "ranger.service.https.attrib.keystore.pass" : "ranger",
           "ranger.service.https.port" : "6182"
         }
@@ -1442,10 +1398,7 @@
           "xasecure.add-hadoop-authorization" : "true",
           "ranger.plugin.hdfs.policy.rest.ssl.config.file" : "/etc/hadoop/conf/ranger-policymgr-ssl.xml",
           "ranger.plugin.hdfs.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
-          "ranger.plugin.hdfs.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
           "ranger.plugin.hdfs.policy.pollIntervalMs" : "30000",
-          "ranger.plugin.hdfs.service.name" : "{{repo_name}}",
-          "ranger.plugin.hdfs.policy.rest.url" : "{{policymgr_mgr_url}}"
         }
       }
     },
@@ -1527,13 +1480,11 @@
           "override_uid" : "true",
           "security_enabled" : "true",
           "managed_hdfs_resource_property_names" : "",
-          "repo_suse_rhel_template" : "[{{repo_id}}]\nname={{repo_id}}\n{% if mirror_list %}mirrorlist={{mirror_list}}{% else %}baseurl={{base_url}}{% endif %}\n\npath=/\nenabled=1\ngpgcheck=0",
           "smokeuser" : "ambari-qa",
           "smokeuser_keytab" : "/etc/security/keytabs/smokeuser.headless.keytab",
           "smokeuser_principal_name" : "ambari-qa-two_master_cluster@HC.COM",
-          "repo_ubuntu_template" : "{{package_type}} {{base_url}} {{components}}",
           "fetch_nonlocal_groups" : "true",
-          "kerberos_domain" : "EXAMPLE.COM",
+          "kerberos_domain" : "{{realm_name}}",
           "ignore_groupsusers_create" : "false"
         }
       }
@@ -1580,17 +1531,13 @@
       "ranger-hive-audit" : {
         "properties_attributes" : { },
         "properties" : {
-          "xasecure.audit.credential.provider.file" : "jceks://file{{credential_file}}",
           "xasecure.audit.destination.hdfs.batch.filespool.dir" : "/var/log/hive/audit/hdfs/spool",
           "xasecure.audit.is.enabled" : "true",
           "xasecure.audit.destination.hdfs" : "true",
           "xasecure.audit.destination.solr.batch.filespool.dir" : "/var/log/hive/audit/solr/spool",
           "xasecure.audit.destination.hdfs.dir" : "hdfs://%HOSTGROUP::host_group_2%:8020/ranger/audit",
-          "xasecure.audit.destination.db.jdbc.url" : "{{audit_jdbc_url}}",
-          "xasecure.audit.destination.db.jdbc.driver" : "{{jdbc_driver}}",
           "xasecure.audit.destination.db" : "false",
           "xasecure.audit.destination.solr" : "false",
-          "xasecure.audit.destination.db.user" : "{{xa_audit_db_user}}",
           "xasecure.audit.destination.solr.zookeepers" : "NONE",
           "xasecure.audit.provider.summary.enabled" : "false",
           "xasecure.audit.destination.db.batch.filespool.dir" : "/var/log/hive/audit/db/spool",
@@ -1604,8 +1551,6 @@
         "properties" : {
           "xasecure.policymgr.clientssl.truststore" : "/usr/hdp/current/knox-server/conf/ranger-plugin-truststore.jks",
           "xasecure.policymgr.clientssl.keystore" : "/usr/hdp/current/knox-server/conf/ranger-plugin-keystore.jks",
-          "xasecure.policymgr.clientssl.keystore.credential.file" : "jceks://file{{credential_file}}",
-          "xasecure.policymgr.clientssl.truststore.credential.file" : "jceks://file{{credential_file}}"
         }
       }
     },
@@ -1617,9 +1562,6 @@
           "ranger.plugin.hive.policy.source.impl" : "org.apache.ranger.admin.client.RangerAdminRESTClient",
           "ranger.plugin.hive.policy.pollIntervalMs" : "30000",
           "ranger.plugin.hive.policy.rest.ssl.config.file" : "/usr/hdp/current/hive-server2/conf/conf.server/ranger-policymgr-ssl.xml",
-          "ranger.plugin.hive.policy.cache.dir" : "/etc/ranger/{{repo_name}}/policycache",
-          "ranger.plugin.hive.service.name" : "{{repo_name}}",
-          "ranger.plugin.hive.policy.rest.url" : "{{policymgr_mgr_url}}"
         }
       }
     }
@@ -2397,7 +2339,6 @@
               },
               {
                 "client" : {
-                  "kerberos.server.primary" : "{{bare_accumulo_principal}}"
                 }
               }
             ],
@@ -2554,10 +2495,7 @@
             "configurations" : [
               {
                 "hbase-site" : {
-                  "hbase.coprocessor.master.classes" : "{{hbase_coprocessor_master_classes}}",
-                  "hbase.coprocessor.regionserver.classes" : "{{hbase_coprocessor_regionserver_classes}}",
                   "hbase.security.authentication" : "kerberos",
-                  "hbase.coprocessor.region.classes" : "{{hbase_coprocessor_region_classes}}",
                   "hbase.security.authorization" : "true",
                   "hbase.bulkload.staging.dir" : "/apps/hbase/staging",
                   "zookeeper.znode.parent" : "/hbase-secure"
@@ -2976,13 +2914,9 @@
               {
                 "storm-site" : {
                   "nimbus.authorizer" : "backtype.storm.security.auth.authorizer.SimpleACLAuthorizer",
-                  "java.security.auth.login.config" : "{{conf_dir}}/storm_jaas.conf",
+                  "java.security.auth.login.config" : /etc/storm_jaas.conf",
                   "drpc.authorizer" : "backtype.storm.security.auth.authorizer.DRPCSimpleACLAuthorizer",
                   "storm.principal.tolocal" : "backtype.storm.security.auth.KerberosPrincipalToLocal",
-                  "storm.zookeeper.superACL" : "sasl:{{storm_bare_jaas_principal}}",
-                  "ui.filter.params" : "{'type': 'kerberos', 'kerberos.principal': '{{storm_ui_jaas_principal}}', 'kerberos.keytab': '{{storm_ui_keytab_path}}', 'kerberos.name.rules': 'DEFAULT'}",
-                  "nimbus.supervisor.users" : "['{{storm_bare_jaas_principal}}']",
-                  "nimbus.admins" : "['{{storm_bare_jaas_principal}}']",
                   "ui.filter" : "org.apache.hadoop.security.authentication.server.AuthenticationFilter",
                   "supervisor.enable" : "true"
                 }

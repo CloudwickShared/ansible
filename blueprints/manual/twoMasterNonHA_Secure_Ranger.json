@@ -108,7 +108,7 @@
       "knox-env" : {
         "properties_attributes" : { },
         "properties" : {
-          "knox_master_secret" : "SECRET:knox-env:2:knox_master_secret",
+          "knox_master_secret" : "knox",
           "knox_principal_name" : "knox/_HOST@HC.COM",
           "knox_keytab_path" : "/etc/security/keytabs/knox.service.keytab",
           "knox_pid_dir" : "/var/run/knox",
@@ -1023,7 +1023,7 @@
           "ranger.audit.source.type" : "solr",
           "ranger.audit.solr.zookeepers" : "NONE",
           "ranger.externalurl" : "{{ranger_external_url}}",
-          "ranger.service.https.attrib.keystore.pass" : "SECRET:ranger-admin-site:1:ranger.service.https.attrib.keystore.pass",
+          "ranger.service.https.attrib.keystore.pass" : "ranger",
           "ranger.service.https.port" : "6182"
         }
       }

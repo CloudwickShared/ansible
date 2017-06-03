@@ -1,0 +1,27 @@
+---
+
+- name: Setup Java
+  hosts: allnodes
+  roles:
+    - oracleJava
+
+- name: Installing PreRequisites
+  hosts: allnodes
+  roles:
+    - PreRequisite
+
+- name: Downloading Ambari Repo
+  hosts: allnodes
+  roles:
+    - AmbariRepo
+
+- name: Setup Ambari Agent
+  hosts: allnodes
+  roles:
+    - AmbariAgent
+
+- name: Setup Ambari Server
+  hosts: ambariserver
+  roles:
+    - AmbariServer
+

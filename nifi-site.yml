@@ -1,0 +1,36 @@
+---
+
+- name: Installing PreRequisites
+  hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+    - PreRequisite
+
+- name: Setup Java
+  hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+    - oracleJava
+
+- name: Downloading Ambari Repo
+  hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+    - AmbariRepo
+
+- name: Setup Ambari Server
+  hosts: ambari_server
+  become: yes
+  become_method: sudo
+  roles:
+    - AmbariServer
+
+- name: Setup Ambari Agent
+  hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+    - AmbariAgent

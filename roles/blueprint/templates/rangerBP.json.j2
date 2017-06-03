@@ -1,0 +1,172 @@
+{
+  "configurations": [
+    {
+      "core-site": {
+        "properties": {
+          "hadoop.proxyuser.hive.groups": "*",
+          "hadoop.proxyuser.hdfs.groups": "*",
+          "hadoop.proxyuser.hcat.hosts": "%HOSTGROUP::master1%",
+          "hadoop.proxyuser.hdfs.hosts": "*",
+          "hadoop.proxyuser.hive.hosts": "%HOSTGROUP::master1%"
+        }
+      }
+    },
+    {
+      "yarn-env": {
+        "properties": {
+          "min_user_id": "1000"
+        }
+      }
+    },
+    {
+      "hdfs-site": {
+        "properties": {
+          "dfs.namenode.inode.attributes.provider.class": "org.apache.ranger.authorization.hadoop.RangerHdfsAuthorizer",
+          "dfs.cluster.administrators": "hdfs"
+        }
+      }
+    },
+    {
+      "admin-properties": {
+        "properties_attributes": {},
+        "properties": {
+          "DB_FLAVOR": "MYSQL",
+          "audit_db_name": "rangeraudit",
+          "db_name": "ranger",
+          "audit_db_user": "rangeraudit",
+          "SQL_CONNECTOR_JAR": "/usr/share/java/mysql-connector-java.jar",
+          "db_user": "ranger",
+          "policymgr_external_url": "http://%HOSTGROUP::master2%:6080",
+          "db_host": "admin.shinigami.com:3306",
+          "db_root_user": "root",
+          "db_root_password": "root",
+          "db_password": "ranger",
+          "audit_db_password": "rangeraudit"
+        }
+      }
+    },
+    {
+      "ranger-admin-site": {
+        "properties_attributes": {},
+        "properties": {
+          "ranger.jpa.jdbc.url": "jdbc:mysql://admin.shinigami.com:3306/ranger",
+          "ranger.jpa.audit.jdbc.url": "jdbc:mysql://admin.shinigami.com:3306/rangeraudit"
+        }
+      }
+    },
+    {
+      "ranger-env": {
+        "properties_attributes": {},
+        "properties": {
+          "ranger_user": "ranger",
+          "ranger-hdfs-plugin-enabled": "Yes",
+          "ranger-yarn-plugin-enabled": "No",
+          "ranger-hbase-plugin-enabled": "No",
+          "ranger-hive-plugin-enabled": "No",
+          "xasecure.audit.destination.solr": "false",
+          "xasecure.audit.destination.db": "true",
+          "xasecure.audit.destination.hdfs.dir": "hdfs://%HOSTGROUP::master1%:8020/ranger/audit",
+          "ranger_group": "ranger",
+          "ranger_admin_username": "admin",
+          "ranger_admin_password": "admin",
+          "admin_username": "admin",
+          "ranger_privelege_user_jdbc_url": "jdbc:mysql://admin.shinigami.com",
+          "create_db_dbuser": "true"
+        }
+      }
+    },
+    {
+      "ranger-ugsync-site": {
+        "properties_attributes": {},
+        "properties": {}
+      }
+    },
+    {
+      "ranger-hdfs-plugin-properties": {
+        "properties_attributes": {},
+        "properties": {
+          "REPOSITORY_CONFIG_USERNAME": "hadoop",
+          "ranger-hdfs-plugin-enabled": "Yes",
+          "common.name.for.certificate": "",
+          "policy_user": "ambari-qa",
+          "hadoop.rpc.protection": ""
+        }
+      }
+    }
+  ],
+  "host_groups": [
+    {
+      "name": "master1",
+      "configurations": [],
+      "components": [
+        {
+          "name": "NAMENODE"
+        },
+        {
+          "name": "SECONDARY_NAMENODE"
+        },
+        {
+          "name": "HDFS_CLIENT"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "YARN_CLIENT"
+        },
+        {
+          "name": "MAPREDUCE2_CLIENT"
+        },
+        {
+          "name": "METRICS_MONITOR"
+        }
+      ],
+      "cardinality": "1"
+    },
+    {
+      "name": "master2",
+      "configurations": [],
+      "components": [
+        {
+          "name": "DATANODE"
+        },
+        {
+          "name": "RESOURCEMANAGER"
+        },
+        {
+          "name": "NODEMANAGER"
+        },
+        {
+          "name": "APP_TIMELINE_SERVER"
+        },
+        {
+          "name": "HISTORYSERVER"
+        },
+        {
+          "name": "ZOOKEEPER_SERVER"
+        },
+        {
+          "name": "ZOOKEEPER_CLIENT"
+        },
+        {
+          "name": "METRICS_COLLECTOR"
+        },
+        {
+          "name": "METRICS_MONITOR"
+        },
+        {
+          "name": "RANGER_USERSYNC"
+        },
+        {
+          "name": "RANGER_ADMIN"
+        }
+      ],
+      "cardinality": "1"
+    }
+  ],
+  "Blueprints": {
+    "blueprint_name": "rangerTest",
+    "stack_name": "HDP",
+    "stack_version": "2.5"
+  }
+}

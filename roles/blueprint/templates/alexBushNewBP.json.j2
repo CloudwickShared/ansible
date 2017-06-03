@@ -9,35 +9,6 @@
             }
         },
     {
-          "kerberos-env": {
-            "properties_attributes" : { },
-            "properties" : {
-              "realm" : "{{ krb_realm }}",
-              "kdc_type" : "mit-kdc",
-              "kdc_host" : "{{ kdcserver }}",
-              "encryption_types": "aes des3-cbc-sha1 rc4 des-cbc-md5",
-              "ldap_url" : "",
-              "create_attributes_template" : "",
-              "container_dn" : "",
-              "admin_server_host" : "{{ adminserver }}"
-            }
-          }
-        },
-        {
-          "krb5-conf": {
-            "kdc.realm": "{{ krb_realm }}",
- 	    "kdc.domain": "{{ krb_realm|lower() }}",
-	    "kdc.admin": "{{ kdc_admin_user }}/{{ kdc_admin_user }}",
-            "kdc.adminpassword": "{{ kdc_admin_password }}",
-	    "kdb.password": "{{ master_db_pass }}",
-            "properties_attributes" : { },
-            "properties" : {
-              "domains" : "{{ krb_realm }}",
-              "manage_krb5_conf" : "true"
-            }
-          }
-        },
-    {
       "admin-properties" : {
         "properties_attributes" : { },
         "properties" : {
@@ -261,9 +232,6 @@
         }
     ],
   "Blueprints" : {
-    "security" : {
-         "type" : "KERBEROS"
-    },
     "stack_name" : "HDP",
     "stack_version" : "{{ hdp_stack }}"
   },
@@ -272,15 +240,6 @@
       "name" : "mn03",
       "configurations" : [ ],
       "components" : [
-        {
-          "name" : "KERBEROS_CLIENT"
-        },
-        {
-              "name" : "RANGER_USERSYNC"
-        },
-        {
-              "name" : "RANGER_ADMIN"
-        },
         {
           "name" : "ZOOKEEPER_SERVER"
         },
@@ -346,9 +305,6 @@
       "configurations" : [ ],
       "components" : [
         {
-          "name" : "KERBEROS_CLIENT"
-        },
-        {
           "name" : "NODEMANAGER"
         },
         {
@@ -366,9 +322,6 @@
       "name" : "mn01",
       "configurations" : [ ],
       "components" : [
-        {
-          "name" : "KERBEROS_CLIENT"
-        },
         {
           "name" : "ZOOKEEPER_SERVER"
         },
@@ -425,9 +378,6 @@
       "configurations" : [ ],
       "components" : [
         {
-          "name" : "KERBEROS_CLIENT"
-        },
-        {
           "name" : "ZOOKEEPER_CLIENT"
         },
         {
@@ -457,9 +407,6 @@
       "name" : "mn02",
       "configurations" : [ ],
       "components" : [
-        {
-          "name" : "KERBEROS_CLIENT"
-        },
         {
           "name" : "ZOOKEEPER_SERVER"
         },
